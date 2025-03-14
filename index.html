@@ -1,30 +1,38 @@
----
-feature_name: Web NFC
-chrome_version: 89
-feature_id: 6261030015467520
-check_min_version: true
----
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web NFC</title>
+    <script src="script.js" defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h3>Фон</h3>
+    <p>
+        Web NFC позволяет сайтам считывать и записывать данные на NFC-метки, когда они находятся вблизи устройства пользователя (обычно 5-10 см). Текущий охват ограничен форматом NDEF, легковесным бинарным форматом сообщений. Низкоуровневые операции ввода/вывода (например, ISO-DEP, NFC-A/B, NFC-F) и эмуляция карт на основе хоста (HCE) не поддерживаются в текущем охвате.
+    </p>
 
-<h3>Background</h3>
-<p>
-Web NFC aims to provide sites the ability to read and write to NFC tags when
-they are brought in close proximity to the user’s device (usually 5-10 cm, 2-4
-inches). The current scope is limited to NDEF, a lightweight binary message
-format. Low-level I/O operations (e.g. ISO-DEP, NFC-A/B, NFC-F) and Host-based
-Card Emulation (HCE) are not supported within the current scope.
-</p>
+    <button id="scanButton">Сканировать</button>
+    <button id="writeButton">Записать</button>
+    <button id="makeReadOnlyButton">Сделать только для чтения</button>
 
-<button id="scanButton">Scan</button>
-<button id="writeButton">Write</button>
-<button id="makeReadOnlyButton">Make Read-Only</button>
+    <script>
+        log = ChromeSamples.log;
 
-{% include output_helper.html initial_output_content=initial_output_content %}
-
-<script>
-log = ChromeSamples.log;
-
-if (!("NDEFReader" in window))
-  ChromeSamples.setStatus("Web NFC is not available. Use Chrome on Android.");
-</script>
-
-{% include js_snippet.html filename='index.js' %}
+        if (!("NDEFReader" in window)) {
+            ChromeSamples.setStatus("Web NFC недоступен. Используйте Chrome на Android.");
+        }
+    </script>
+</body>
+</html>
