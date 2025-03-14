@@ -28,10 +28,55 @@
     <button id="makeReadOnlyButton">Сделать только для чтения</button>
 
     <script>
-        log = ChromeSamples.log;
+        const log = console.log; // Замена для использования logging
 
         if (!("NDEFReader" in window)) {
-            ChromeSamples.setStatus("Web NFC недоступен. Используйте Chrome на Android.");
+            log("Web NFC недоступен. Используйте Chrome на Android.");
+        } else {
+            document.getElementById("scanButton").addEventListener("click", async () => {
+                log("Пользователь нажал кнопку сканирования");
+
+                try {
+                    const ndef = new NDEFReader();
+                    await ndef.scan();
+                    log("> Сканирование начато");
+
+                    ndef.addEventListener("readingerror", () => {
+                        log("Ой! Невозможно прочитать данные с NFC-метки. Попробуйте другую?");
+                    });
+
+                    ndef.addEventListener("reading", ({ message, serialNumber }) => {
+                        log(`> Серийный номер: ${serialNumber}`);
+                        log(`> Записи: (${message.records.length})`);
+                    });
+                } catch (error) {
+                    log("Ой! " + error);
+                }
+            });
+
+            document.getElementById("writeButton").addEventListener("click", async () => {
+                log("Пользователь нажал кнопку записи");
+
+                try {
+                    const ndef = new NDEFReader();
+                    await ndef.write("Hello world!");
+                    log("> Сообщение записано");
+                } catch (error) {
+                    log("Ой! " + error);
+                }
+            });
+
+            document.getElementById("makeReadOnlyButton").addEventListener("click", async () => {
+                log("Пользователь нажал кнопку сделать только для чтения");
+
+                try {
+                    const ndef = new NDEFReader();
+                    await ndef.makeReadOnly();
+                    log("> NFC-метка была сделана постоянно только для чтения");
+                } catch (error) {
+                    log("Ой! " + error);
+                }
+            });
         }
     </script>
 </body>
